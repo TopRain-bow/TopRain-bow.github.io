@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <author>
+    <name>哈基蜂</name>
+  </author>
+  <generator uri="https://hexo.io/">Hexo</generator>
+  <id>https://TopRain-bow.github.io/</id>
+  <link href="https://TopRain-bow.github.io/" rel="alternate"/>
+  <link href="https://TopRain-bow.github.io/atom.xml" rel="self"/>
+  <rights>All rights reserved 2026, 哈基蜂</rights>
+  <subtitle>二次元风格研究笔记</subtitle>
+  <title>哈基蜂的小站</title>
+  <updated>2026-10-28T09:19:16.161Z</updated>
+  <entry>
+    <author>
+      <name>哈基蜂</name>
+    </author>
+    <category term="技术" scheme="https://TopRain-bow.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
+    <category term="Hexo" scheme="https://TopRain-bow.github.io/tags/Hexo/"/>
+    <category term="教程" scheme="https://TopRain-bow.github.io/tags/%E6%95%99%E7%A8%8B/"/>
+    <content>
+      <![CDATA[<h2 id="写文章"><a href="#写文章" class="headerlink" title="写文章"></a>写文章</h2><p>在 <code>source/_posts/</code> 里新建一个 Markdown 文件，头部写标题、日期、标签和分类，正文直接写 Markdown。</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 本地预览</span></span><br><span class="line">npx hexo server</span><br><span class="line"></span><br><span class="line"><span class="comment"># 生成静态文件</span></span><br><span class="line">npx hexo generate</span><br><span class="line"><span class="comment"># 生成结果在 public/ 里，直接用任何静态服务器就能打开</span></span><br><span class="line">python3 -m http.server 4000 -d public</span><br></pre></td></tr></table></figure><h2 id="代码块"><a href="#代码块" class="headerlink" title="代码块"></a>代码块</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="string">&quot;hello, sakura&quot;</span>)</span><br></pre></td></tr></table></figure><h2 id="图片"><a href="#图片" class="headerlink" title="图片"></a>图片</h2><p>图片建议走图床或对象存储，不要全塞进 Git 仓库，仓库会越变越大。</p><h2 id="评论"><a href="#评论" class="headerlink" title="评论"></a>评论</h2><p>静态站本身没有评论，后面可以接 Waline，读者不用注册 GitHub 也能留言。</p>]]>
+    </content>
+    <id>https://TopRain-bow.github.io/2026/10/28/hexo-sakura-notes/</id>
+    <link href="https://TopRain-bow.github.io/2026/10/28/hexo-sakura-notes/"/>
+    <published>2026-10-28T09:21:00.000Z</published>
+    <summary>
+      <![CDATA[<h2 id="写文章"><a href="#写文章" class="headerlink" title="写文章"></a>写文章</h2><p>在 <code>source/_posts/</code> 里新建一个 Markdown 文件，头部写标题、日期、标签和分类，正文直]]>
+    </summary>
+    <title>Hexo + Sakura 这样写文章就够了</title>
+    <updated>2026-10-28T09:19:16.161Z</updated>
+  </entry>
+  <entry>
+    <author>
+      <name>哈基蜂</name>
+    </author>
+    <category term="生活" scheme="https://TopRain-bow.github.io/categories/%E7%94%9F%E6%B4%BB/"/>
+    <category term="随想" scheme="https://TopRain-bow.github.io/tags/%E9%9A%8F%E6%83%B3/"/>
+    <category term="Sakura" scheme="https://TopRain-bow.github.io/tags/Sakura/"/>
+    <content>
+      <![CDATA[<p>这是用 Hexo + Sakura 主题搭的二次元风格小站，先跑在 InstaBox 上做演示。</p><p>以后这里会放：</p><ul><li>自己研究过的内容和教程，时间久了自己回来翻</li><li>偶尔给别人看的学习笔记</li><li>图片和归档</li></ul><p>先看效果，主题、头图、菜单都可以再改。</p>]]>
+    </content>
+    <id>https://TopRain-bow.github.io/2026/10/28/hello-sakura/</id>
+    <link href="https://TopRain-bow.github.io/2026/10/28/hello-sakura/"/>
+    <published>2026-10-28T09:20:00.000Z</published>
+    <summary>
+      <![CDATA[<p>这是用 Hexo + Sakura 主题搭的二次元风格小站，先跑在 InstaBox 上做演示。</p>
+<p>以后这里会放：</p>
+<ul>
+<li>自己研究过的内容和教程，时间久了自己回来翻</li>
+<li>偶尔给别人看的学习笔记</li>
+<li>图片和归档</l]]>
+    </summary>
+    <title>哈基蜂的小站开张了</title>
+    <updated>2026-10-28T09:19:16.160Z</updated>
+  </entry>
+</feed>
