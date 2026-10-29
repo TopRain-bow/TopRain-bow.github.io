@@ -2,95 +2,41 @@
 <html lang="zh-CN">
 	<head>
 		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<meta name="robots" content="noindex, nofollow" />
-		<meta name="color-scheme" content="light dark" />
-		<title>写文章 · 哈基蜂的小站</title>
-		<link rel="icon" href="/favicon/firefly-32.png" />
+		<meta http-equiv="refresh" content="0; url=/write/" />
+		<title>已换到新的写作页面</title>
+		<link rel="canonical" href="/write/" />
 		<style>
-			:root {
-				color-scheme: light dark;
-			}
 			body {
 				margin: 0;
-				font-family: system-ui, -apple-system, "Segoe UI", "Noto Sans SC", sans-serif;
-				background: #f7f8fa;
+				min-height: 100vh;
+				display: grid;
+				place-items: center;
+				font: 15px/1.7 system-ui, -apple-system, "Segoe UI", "Noto Sans SC", sans-serif;
+				background: #f6f7f9;
 				color: #1f2430;
-			}
-			#fallback {
-				max-width: 40rem;
-				margin: 12vh auto;
-				padding: 0 1.5rem;
-				line-height: 1.8;
-			}
-			#fallback h1 {
-				font-size: 1.25rem;
-				margin: 0 0 1rem;
-			}
-			#fallback code {
-				background: #e8ebf0;
-				border-radius: 4px;
-				padding: 0.1rem 0.35rem;
-			}
-			#fallback ul {
-				padding-left: 1.2rem;
 			}
 			@media (prefers-color-scheme: dark) {
 				body {
-					background: #16181d;
+					background: #14161b;
 					color: #e6e8ee;
 				}
-				#fallback code {
-					background: #262a33;
+				a {
+					color: #5b8def;
 				}
+			}
+			div {
+				text-align: center;
+				padding: 1rem;
 			}
 		</style>
 	</head>
 	<body>
-		<div id="fallback">
-			<h1>正在加载写作后台…</h1>
-			<p>
-				如果长时间停在这里，说明 Sveltia CMS 的脚本没加载出来（多半是网络到
-				<code>unpkg.com</code> 不通）。可以换一个镜像后刷新：
-			</p>
-			<ul>
-				<li>打开 <code>/admin/index.html</code> 把脚本地址换成 <code>cdn.jsdelivr.net/npm/@sveltia/cms/dist/sveltia-cms.js</code></li>
-				<li>或直接用 GitHub 网页版新建 <code>src/content/posts/xxx.md</code></li>
-			</ul>
+		<div>
+			<p>写作页面已经搬到 <a href="/write/">/write/</a>，正在跳转…</p>
 		</div>
-		<script type="module">
-			// 清掉占位内容，Sveltia 会把整个 body 接管
-			document.getElementById("fallback")?.remove();
-
-			// 依次尝试多个 CDN，前一个失败自动换下一个。
-			// jsDelivr 排前面：国内网络访问 unpkg 经常不通。
-			const sources = [
-				"https://cdn.jsdelivr.net/npm/@sveltia/cms/dist/sveltia-cms.js",
-				"https://unpkg.com/@sveltia/cms/dist/sveltia-cms.js",
-			];
-
-			const fail = () => {
-				document.body.innerHTML =
-					'<div style="max-width:40rem;margin:12vh auto;padding:0 1.5rem;line-height:1.8;font-family:system-ui,sans-serif">' +
-					"<h1>写作后台加载失败</h1>" +
-					"<p>两个 CDN 都没连上，通常是网络问题。换个网络或挂代理后刷新即可。</p>" +
-					"<p>应急办法：直接在 GitHub 网页版新建 <code>src/content/posts/xxx.md</code>，" +
-					"内容格式见仓库里的 <code>docs/WRITING.md</code>。</p></div>";
-			};
-
-			const load = (i) => {
-				if (i >= sources.length) {
-					fail();
-					return;
-				}
-				const script = document.createElement("script");
-				script.type = "module";
-				script.src = sources[i];
-				script.onerror = () => load(i + 1);
-				document.head.appendChild(script);
-			};
-
-			load(0);
+		<script>
+			location.replace("/write/");
 		</script>
 	</body>
 </html>

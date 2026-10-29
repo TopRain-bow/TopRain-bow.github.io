@@ -1,0 +1,779 @@
+<!doctype html>
+<html lang="zh-CN">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta name="robots" content="noindex, nofollow" />
+		<meta name="color-scheme" content="light dark" />
+		<title>写文章 · 哈基蜂的小站</title>
+		<link rel="icon" href="/favicon/firefly-32.png" />
+		<style>
+			:root {
+				--bg: #f6f7f9;
+				--panel: #ffffff;
+				--text: #1f2430;
+				--muted: #6b7280;
+				--line: #dfe3e9;
+				--accent: #3b6fd4;
+				--accent-text: #ffffff;
+				--ok: #17803d;
+				--err: #c1263c;
+				--input-bg: #ffffff;
+			}
+			@media (prefers-color-scheme: dark) {
+				:root {
+					--bg: #14161b;
+					--panel: #1b1e25;
+					--text: #e6e8ee;
+					--muted: #9aa1ae;
+					--line: #2c313a;
+					--accent: #5b8def;
+					--accent-text: #0d1017;
+					--ok: #4ade80;
+					--err: #f87171;
+					--input-bg: #12141a;
+				}
+			}
+			* {
+				box-sizing: border-box;
+			}
+			body {
+				margin: 0;
+				background: var(--bg);
+				color: var(--text);
+				font: 15px/1.65 system-ui, -apple-system, "Segoe UI", "Noto Sans SC", sans-serif;
+				-webkit-text-size-adjust: 100%;
+			}
+			.wrap {
+				max-width: 46rem;
+				margin: 0 auto;
+				padding: 1.25rem 1rem 4rem;
+			}
+			header.top {
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				gap: 1rem;
+				flex-wrap: wrap;
+				margin-bottom: 1rem;
+			}
+			header.top h1 {
+				font-size: 1.15rem;
+				margin: 0;
+			}
+			header.top .conn {
+				font-size: 0.82rem;
+				color: var(--muted);
+				display: flex;
+				align-items: center;
+				gap: 0.5rem;
+			}
+			.dot {
+				width: 0.5rem;
+				height: 0.5rem;
+				border-radius: 50%;
+				background: var(--muted);
+				flex: none;
+			}
+			.dot.on {
+				background: var(--ok);
+			}
+			.dot.off {
+				background: var(--err);
+			}
+			.panel {
+				background: var(--panel);
+				border: 1px solid var(--line);
+				border-radius: 12px;
+				padding: 1.1rem 1.15rem;
+				margin-bottom: 1rem;
+			}
+			.panel h2 {
+				font-size: 0.95rem;
+				margin: 0 0 0.75rem;
+			}
+			label {
+				display: block;
+				font-size: 0.82rem;
+				color: var(--muted);
+				margin-bottom: 0.3rem;
+			}
+			input[type="text"],
+			input[type="password"],
+			input[type="date"],
+			select,
+			textarea {
+				width: 100%;
+				font: inherit;
+				color: var(--text);
+				background: var(--input-bg);
+				border: 1px solid var(--line);
+				border-radius: 8px;
+				padding: 0.55rem 0.65rem;
+			}
+			textarea {
+				resize: vertical;
+			}
+			input:focus,
+			select:focus,
+			textarea:focus {
+				outline: 2px solid color-mix(in srgb, var(--accent) 45%, transparent);
+				outline-offset: 1px;
+				border-color: var(--accent);
+			}
+			.row {
+				margin-bottom: 0.9rem;
+			}
+			.grid2 {
+				display: grid;
+				grid-template-columns: 1fr 1fr;
+				gap: 0.9rem;
+			}
+			@media (max-width: 560px) {
+				.grid2 {
+					grid-template-columns: 1fr;
+				}
+			}
+			button {
+				font: inherit;
+				cursor: pointer;
+				border-radius: 8px;
+				border: 1px solid var(--line);
+				background: var(--panel);
+				color: var(--text);
+				padding: 0.55rem 0.9rem;
+			}
+			button:hover {
+				border-color: var(--accent);
+			}
+			button:disabled {
+				opacity: 0.55;
+				cursor: not-allowed;
+			}
+			button.primary {
+				background: var(--accent);
+				border-color: var(--accent);
+				color: var(--accent-text);
+				font-weight: 600;
+			}
+			button.primary:hover {
+				filter: brightness(1.08);
+			}
+			.actions {
+				display: flex;
+				gap: 0.6rem;
+				flex-wrap: wrap;
+				align-items: center;
+			}
+			.hint {
+				font-size: 0.78rem;
+				color: var(--muted);
+				margin-top: 0.3rem;
+			}
+			.msg {
+				border-radius: 8px;
+				padding: 0.6rem 0.75rem;
+				font-size: 0.86rem;
+				margin-top: 0.75rem;
+				display: none;
+				white-space: pre-wrap;
+			}
+			.msg.show {
+				display: block;
+			}
+			.msg.ok {
+				background: color-mix(in srgb, var(--ok) 14%, transparent);
+				color: var(--ok);
+			}
+			.msg.err {
+				background: color-mix(in srgb, var(--err) 14%, transparent);
+				color: var(--err);
+			}
+			.msg.info {
+				background: color-mix(in srgb, var(--accent) 12%, transparent);
+				color: var(--accent);
+			}
+			.msg a {
+				color: inherit;
+			}
+			.steps {
+				margin: 0;
+				padding-left: 1.2rem;
+				font-size: 0.88rem;
+			}
+			.steps li {
+				margin-bottom: 0.35rem;
+			}
+			code {
+				background: color-mix(in srgb, var(--text) 8%, transparent);
+				border-radius: 4px;
+				padding: 0.08rem 0.3rem;
+				font-size: 0.86em;
+			}
+			details {
+				margin-top: 0.75rem;
+			}
+			summary {
+				cursor: pointer;
+				font-size: 0.82rem;
+				color: var(--muted);
+			}
+			pre.preview {
+				background: var(--input-bg);
+				border: 1px solid var(--line);
+				border-radius: 8px;
+				padding: 0.7rem;
+				font-size: 0.78rem;
+				line-height: 1.5;
+				overflow: auto;
+				max-height: 16rem;
+				white-space: pre-wrap;
+				word-break: break-word;
+			}
+			.url-preview {
+				font-size: 0.8rem;
+				color: var(--muted);
+				word-break: break-all;
+			}
+			.hidden {
+				display: none !important;
+			}
+			a.link {
+				color: var(--accent);
+			}
+		</style>
+	</head>
+	<body>
+		<div class="wrap">
+			<header class="top">
+				<h1>写文章 <span style="font-weight: 400; font-size: 0.85rem; color: var(--muted)">哈基蜂的小站</span></h1>
+				<div class="conn">
+					<span id="connDot" class="dot"></span>
+					<span id="connText">未连接</span>
+					<button id="btnForget" class="hidden" style="padding: 0.2rem 0.5rem; font-size: 0.78rem">换令牌</button>
+				</div>
+			</header>
+
+			<!-- ========== 令牌设置 ========== -->
+			<section id="tokenPanel" class="panel">
+				<h2>第一次使用：粘一个令牌（只存你自己的浏览器里）</h2>
+				<p class="hint" style="margin-top: 0; margin-bottom: 0.8rem">
+					浏览器里的静态页面本身没有权限往 GitHub 写东西，必须带一个属于你的凭据。粘一次就行，之后打开这个页面可以直接写。
+				</p>
+				<ol class="steps">
+					<li>
+						打开
+						<a
+							class="link"
+							id="patLink"
+							href="https://github.com/settings/personal-access-tokens/new?name=Firefly%20Writer&contents=write"
+							target="_blank"
+							rel="noopener"
+							>创建令牌</a
+						>
+						（权限已预填好 <code>Contents: Read and write</code>）
+					</li>
+					<li>仓库那一栏选 <code>TopRain-bow.github.io</code>，然后点最下面的 Generate token</li>
+					<li>复制 <code>github_pat_...</code> 粘到下面，点保存</li>
+				</ol>
+				<div class="row" style="margin-top: 0.9rem">
+					<label for="tokenInput">访问令牌</label>
+					<input id="tokenInput" type="password" placeholder="github_pat_..." autocomplete="off" spellcheck="false" />
+				</div>
+				<div class="actions">
+					<button id="btnSaveToken" class="primary">保存并连接</button>
+					<a class="link" href="/" style="font-size: 0.82rem">回站点</a>
+				</div>
+				<div id="tokenMsg" class="msg"></div>
+			</section>
+
+			<!-- ========== 写作表单 ========== -->
+			<section id="editor" class="panel hidden">
+				<div class="row">
+					<label for="fTitle">标题</label>
+					<input id="fTitle" type="text" placeholder="文章标题" />
+				</div>
+
+				<div class="grid2">
+					<div class="row">
+						<label for="fSlug">网址别名（文件名）</label>
+						<input id="fSlug" type="text" placeholder="my-first-post" spellcheck="false" />
+						<div class="hint">小写英文和连字符。发布后别再改，否则旧链接会 404。</div>
+					</div>
+					<div class="row">
+						<label for="fDate">发布日期</label>
+						<input id="fDate" type="date" />
+					</div>
+				</div>
+
+				<div class="grid2">
+					<div class="row">
+						<label for="fCategory">分类</label>
+						<select id="fCategory">
+							<option value="">（不选）</option>
+							<option value="生活">生活</option>
+							<option value="技术">技术</option>
+							<option value="学习">学习</option>
+							<option value="折腾">折腾</option>
+							<option value="随想">随想</option>
+						</select>
+					</div>
+					<div class="row">
+						<label for="fTags">标签（逗号分隔）</label>
+						<input id="fTags" type="text" placeholder="随笔, Astro" />
+					</div>
+				</div>
+
+				<div class="row">
+					<label for="fDesc">摘要</label>
+					<input id="fDesc" type="text" placeholder="一两句话，显示在列表卡片上" />
+				</div>
+
+				<div class="row">
+					<label for="fBody">正文（Markdown）</label>
+					<textarea id="fBody" rows="16" placeholder="正文从这里开始…"></textarea>
+				</div>
+
+				<div class="row" style="display: flex; gap: 1.2rem; align-items: center; flex-wrap: wrap">
+					<label style="display: flex; align-items: center; gap: 0.4rem; margin: 0; color: var(--text)">
+						<input id="fDraft" type="checkbox" style="width: auto" /> 存为草稿（不发布）
+					</label>
+					<span class="url-preview" id="urlPreview"></span>
+				</div>
+
+				<details>
+					<summary>看看会提交什么（原始 Markdown）</summary>
+					<pre class="preview" id="mdPreview"></pre>
+				</details>
+
+				<div class="actions" style="margin-top: 1rem">
+					<button id="btnSubmit" class="primary">提交并发布</button>
+					<button id="btnGithub">不用令牌：在 GitHub 打开</button>
+				</div>
+				<div class="hint">「提交并发布」直接写进仓库 main，GitHub Actions 自动构建，1–2 分钟上线。</div>
+				<div id="submitMsg" class="msg"></div>
+			</section>
+		</div>
+
+		<script>
+			(function () {
+				"use strict";
+
+				var OWNER = "TopRain-bow";
+				var REPO = "TopRain-bow.github.io";
+				var BRANCH = "main";
+				var DIR = "src/content/posts";
+				var SITE = "https://toprain-bow.github.io";
+				var LS_KEY = "firefly_writer_token";
+
+				var $ = function (id) {
+					return document.getElementById(id);
+				};
+
+				var token = "";
+				var step = 0; // 0 = 未验证，1 = 已验证
+
+				// ---------- 工具 ----------
+				function b64utf8(str) {
+					var bytes = new TextEncoder().encode(str);
+					var bin = "";
+					var chunk = 0x8000;
+					for (var i = 0; i < bytes.length; i += chunk) {
+						bin += String.fromCharCode.apply(null, bytes.subarray(i, i + chunk));
+					}
+					return btoa(bin);
+				}
+
+				function yq(s) {
+					return '"' + String(s).replace(/\\/g, "\\\\").replace(/"/g, '\\"').replace(/\n/g, "\\n") + '"';
+				}
+
+				function today() {
+					var d = new Date();
+					var p = function (n) {
+						return String(n).padStart(2, "0");
+					};
+					return d.getFullYear() + "-" + p(d.getMonth() + 1) + "-" + p(d.getDate());
+				}
+
+				function slugify(s) {
+					return String(s)
+						.toLowerCase()
+						.replace(/[^a-z0-9]+/g, "-")
+						.replace(/^-+|-+$/g, "")
+						.slice(0, 60);
+				}
+
+				function fallbackSlug() {
+					var d = new Date();
+					var p = function (n) {
+						return String(n).padStart(2, "0");
+					};
+					return (
+						"post-" +
+						d.getFullYear() +
+						p(d.getMonth() + 1) +
+						p(d.getDate()) +
+						"-" +
+						p(d.getHours()) +
+						p(d.getMinutes())
+					);
+				}
+
+				function showMsg(el, kind, html) {
+					el.className = "msg show " + kind;
+					el.innerHTML = html;
+				}
+
+				function hideMsg(el) {
+					el.className = "msg";
+					el.innerHTML = "";
+				}
+
+				// ---------- GitHub API ----------
+				function api(path, opts) {
+					opts = opts || {};
+					var headers = {
+						Accept: "application/vnd.github+json",
+						"X-GitHub-Api-Version": "2022-11-28"
+					};
+					if (token) headers.Authorization = "Bearer " + token;
+					if (opts.body) headers["Content-Type"] = "application/json";
+					return fetch("https://api.github.com" + path, {
+						method: opts.method || "GET",
+						headers: headers,
+						body: opts.body ? JSON.stringify(opts.body) : undefined,
+						cache: "no-store"
+					}).then(function (res) {
+						return res.text().then(function (text) {
+							var data = null;
+							try {
+								data = text ? JSON.parse(text) : null;
+							} catch (e) {
+								data = null;
+							}
+							return { ok: res.ok, status: res.status, data: data, raw: text };
+						});
+					});
+				}
+
+				function connect(t) {
+					token = t;
+					return api("/user").then(function (r) {
+						if (!r.ok) {
+							throw new Error(
+								r.status === 401 ? "令牌无效或已过期" : "连接失败（HTTP " + r.status + "）"
+							);
+						}
+						var login = r.data && r.data.login;
+						return api("/repos/" + OWNER + "/" + REPO).then(function (rr) {
+							if (!rr.ok) {
+								throw new Error(
+									"这个令牌读不到 " +
+										OWNER +
+										"/" +
+										REPO +
+										"（HTTP " +
+										rr.status +
+										"）。检查令牌是否勾选了该仓库、权限是否给了 Contents: Read and write"
+								);
+							}
+							var canPush = !!(rr.data && rr.data.permissions && rr.data.permissions.push);
+							if (!canPush) {
+								throw new Error("这个令牌对该仓库没有写权限，需要 Contents: Read and write");
+							}
+							return login || "已连接";
+						});
+					});
+				}
+
+				// ---------- 状态渲染 ----------
+				function renderAuth(login) {
+					step = 1;
+					$("connDot").className = "dot on";
+					$("connText").textContent = "已连接 · " + login;
+					$("btnForget").classList.remove("hidden");
+					$("tokenPanel").classList.add("hidden");
+					$("editor").classList.remove("hidden");
+				}
+
+				function renderNoAuth() {
+					step = 0;
+					$("connDot").className = "dot off";
+					$("connText").textContent = "未连接";
+					$("btnForget").classList.add("hidden");
+					$("tokenPanel").classList.remove("hidden");
+					$("editor").classList.add("hidden");
+				}
+
+				// ---------- 表单 → markdown ----------
+				function collect() {
+					var tagsRaw = $("fTags").value.trim();
+					var tags = tagsRaw
+						? tagsRaw
+								.split(/[,，]/)
+								.map(function (s) {
+									return s.trim();
+								})
+								.filter(Boolean)
+						: [];
+					return {
+						title: $("fTitle").value.trim(),
+						slug: slugify($("fSlug").value.trim()),
+						date: $("fDate").value || today(),
+						category: $("fCategory").value,
+						tags: tags,
+						description: $("fDesc").value.trim(),
+						draft: $("fDraft").checked,
+						body: $("fBody").value
+					};
+				}
+
+				function buildMarkdown(f) {
+					var out = ["---"];
+					out.push("title: " + yq(f.title));
+					out.push("published: " + f.date);
+					if (f.description) out.push("description: " + yq(f.description));
+					if (f.tags.length) out.push("tags: [" + f.tags.map(yq).join(", ") + "]");
+					if (f.category) out.push("category: " + yq(f.category));
+					out.push("draft: " + (f.draft ? "true" : "false"));
+					out.push("---");
+					out.push("");
+					out.push(f.body.replace(/\s+$/, ""));
+					out.push("");
+					return out.join("\n");
+				}
+
+				function validate(f) {
+					if (!f.title) return "标题不能为空";
+					if (!f.slug) return "网址别名不能为空，只能用小写英文、数字和连字符";
+					if (!f.body.trim()) return "正文不能为空";
+					return null;
+				}
+
+				function refreshPreview() {
+					var f = collect();
+					$("mdPreview").textContent = buildMarkdown(f);
+					$("urlPreview").textContent = f.slug ? SITE + "/posts/" + f.slug + "/" : "";
+				}
+
+				// ---------- 提交 ----------
+				function gitHubNewFileURL(f) {
+					var path = DIR + "/" + f.slug + ".md";
+					return (
+						"https://github.com/" +
+						OWNER +
+						"/" +
+						REPO +
+						"/new/" +
+						BRANCH +
+						"?filename=" +
+						encodeURIComponent(path) +
+						"&value=" +
+						encodeURIComponent(buildMarkdown(f))
+					);
+				}
+
+				function submit() {
+					var msg = $("submitMsg");
+					var f = collect();
+					var err = validate(f);
+					if (err) {
+						showMsg(msg, "err", err);
+						return;
+					}
+					if (step !== 1) {
+						showMsg(msg, "err", "还没连接令牌");
+						return;
+					}
+
+					var path = DIR + "/" + f.slug + ".md";
+					var btn = $("btnSubmit");
+					btn.disabled = true;
+					showMsg(msg, "info", "正在检查是否已存在同名文章…");
+
+					api("/repos/" + OWNER + "/" + REPO + "/contents/" + encodeURI(path) + "?ref=" + BRANCH)
+						.then(function (r) {
+							var existingSha = null;
+							if (r.ok && r.data && r.data.sha) {
+								existingSha = r.data.sha;
+								var overwrite = window.confirm(
+									"已经有一篇 " + path + " 了。\n\n点「确定」覆盖它，点「取消」放弃。\n（也可以在网址别名里换个名字）"
+								);
+								if (!overwrite) {
+									throw new Error("__cancel__");
+								}
+							}
+							showMsg(msg, "info", "正在提交到 " + BRANCH + "…");
+							var body = {
+								message: (existingSha ? "post: update " : "post: add ") + f.slug,
+								content: b64utf8(buildMarkdown(f)),
+								branch: BRANCH
+							};
+							if (existingSha) body.sha = existingSha;
+							return api("/repos/" + OWNER + "/" + REPO + "/contents/" + encodeURI(path), {
+								method: "PUT",
+								body: body
+							});
+						})
+						.then(function (r) {
+							if (!r.ok) {
+								var detail =
+									(r.data && r.data.message) || r.raw || "HTTP " + r.status;
+								throw new Error("提交失败：" + detail);
+							}
+							var commitUrl = r.data && r.data.commit && r.data.commit.html_url;
+							showMsg(
+								msg,
+								"ok",
+								"已提交 ✅ GitHub Actions 正在构建，通常 1–2 分钟上线。<br>" +
+									'<a href="' +
+									SITE +
+									"/posts/" +
+									f.slug +
+									'/" target="_blank" rel="noopener">打开文章</a> · ' +
+									'<a href="https://github.com/' +
+									OWNER +
+									"/" +
+									REPO +
+									'/actions" target="_blank" rel="noopener">看构建进度</a>' +
+									(commitUrl
+										? ' · <a href="' + commitUrl + '" target="_blank" rel="noopener">看这次提交</a>'
+										: "")
+							);
+							$("fBody").value = "";
+							$("fTitle").value = "";
+							$("fSlug").value = "";
+							$("fDesc").value = "";
+							$("fTags").value = "";
+							$("fDraft").checked = false;
+							refreshPreview();
+						})
+						.catch(function (e) {
+							if (e && e.message === "__cancel__") {
+								hideMsg(msg);
+								return;
+							}
+							showMsg(msg, "err", (e && e.message) || String(e));
+						})
+						.finally(function () {
+							btn.disabled = false;
+						});
+				}
+
+				// ---------- 事件 ----------
+				$("patLink").href =
+					"https://github.com/settings/personal-access-tokens/new?name=" +
+					encodeURIComponent("Firefly Writer") +
+					"&contents=write";
+
+				$("btnSaveToken").addEventListener("click", function () {
+					var t = $("tokenInput").value.trim();
+					var msg = $("tokenMsg");
+					if (!t) {
+						showMsg(msg, "err", "先把令牌粘进来");
+						return;
+					}
+					var btn = $("btnSaveToken");
+					btn.disabled = true;
+					showMsg(msg, "info", "验证中…");
+					connect(t)
+						.then(function (login) {
+							try {
+								localStorage.setItem(LS_KEY, t);
+							} catch (e) {
+								/* 无痕模式可能写不进去，不影响本次使用 */
+							}
+							$("tokenInput").value = "";
+							renderAuth(login);
+							refreshPreview();
+						})
+						.catch(function (e) {
+							showMsg(msg, "err", (e && e.message) || String(e));
+						})
+						.finally(function () {
+							btn.disabled = false;
+						});
+				});
+
+				$("tokenInput").addEventListener("keydown", function (e) {
+					if (e.key === "Enter") $("btnSaveToken").click();
+				});
+
+				$("btnForget").addEventListener("click", function () {
+					try {
+						localStorage.removeItem(LS_KEY);
+					} catch (e) {}
+					token = "";
+					renderNoAuth();
+				});
+
+				$("fTitle").addEventListener("blur", function () {
+					if (!$("fSlug").value.trim()) {
+						var s = slugify($("fTitle").value);
+						$("fSlug").value = s || fallbackSlug();
+						refreshPreview();
+					}
+				});
+
+				$("btnSubmit").addEventListener("click", submit);
+
+				$("btnGithub").addEventListener("click", function () {
+					var f = collect();
+					var err = validate(f);
+					if (err) {
+						showMsg($("submitMsg"), "err", err);
+						return;
+					}
+					var url = gitHubNewFileURL(f);
+					if (url.length > 7000) {
+						showMsg(
+							$("submitMsg"),
+							"err",
+							"正文太长，这个免令牌的跳转链接会超长被 GitHub 拒绝。请用上面的「提交并发布」。"
+						);
+						return;
+					}
+					window.open(url, "_blank", "noopener");
+					showMsg(
+						$("submitMsg"),
+						"info",
+						"已在新标签页打开 GitHub。内容已经填好，你只要在页面底部点一次 Commit changes 就行。"
+					);
+				});
+
+				["fTitle", "fSlug", "fTags", "fDesc", "fBody", "fDraft", "fDate", "fCategory"].forEach(function (id) {
+					$(id).addEventListener("input", refreshPreview);
+					$(id).addEventListener("change", refreshPreview);
+				});
+
+				// ---------- 启动 ----------
+				$("fDate").value = today();
+				refreshPreview();
+
+				var saved = null;
+				try {
+					saved = localStorage.getItem(LS_KEY);
+				} catch (e) {}
+				if (saved) {
+					showMsg($("tokenMsg"), "info", "检测到已保存的令牌，正在连接…");
+					connect(saved)
+						.then(function (login) {
+							hideMsg($("tokenMsg"));
+							renderAuth(login);
+							refreshPreview();
+						})
+						.catch(function (e) {
+							try {
+								localStorage.removeItem(LS_KEY);
+							} catch (err) {}
+							renderNoAuth();
+							showMsg($("tokenMsg"), "err", "保存的令牌失效了：" + ((e && e.message) || e) + "，请重新粘一个。");
+						});
+				} else {
+					renderNoAuth();
+				}
+			})();
+		</script>
+	</body>
+</html>

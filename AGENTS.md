@@ -75,17 +75,21 @@ draft: false
 分类是自由字符串，但为了分类页不碎片化，**沿用已有分类，不要随手造新的**：
 
 - 已有：`生活`、`技术`、`学习`、`折腾`、`随想`
-- 确实需要新分类时：同时更新 `public/admin/config.yml` 里 `category` 字段的 `options` 列表，保持网页后台的下拉选项和实际数据一致。
+- 确实需要新分类时：同时更新 `public/write/index.html` 里 `<select id="fCategory">` 的选项，保持网页写作页的下拉和实际数据一致。
 
 ### 2.5 三种写入入口（产物完全一样，都是那个 md 文件）
 
 | 入口 | 适合谁 | 怎么做 |
 |---|---|---|
 | 本地写 | 有开发环境 | `pnpm new-post my-first-post` 生成骨架 → 编辑 → `git push` |
-| 网页后台 `/admin` | 人类在浏览器/手机上 | https://toprain-bow.github.io/admin/ → PAT 登录 → 新建 → 填表 → Publish |
+| 网页写 `/write` | 人类在浏览器/手机上 | https://toprain-bow.github.io/write/ → 粘一次 GitHub 令牌 → 填表 → 提交并发布 |
 | GitHub 网页 | 应急、手机 | 在 GitHub 上 `src/content/posts/` → Add file → 贴模板 → Commit |
 
-**智能体不要用 `/admin`**，那是给人用的浏览器界面。直接写文件 + commit 最省事。
+`/write/` 是自建的单页写作器（`public/write/index.html`），走 GitHub Contents API 直接 commit，
+**没有第三方 CMS、没有 OAuth 服务器、没有任何后端**。`/admin/` 只是跳转到 `/write/` 的旧链接。
+
+**智能体不要用 `/write`**，那是给人用的浏览器界面。直接写文件 + commit 最省事。
+分类下拉的选项硬编码在 `public/write/index.html` 的 `<select id="fCategory">` 里。
 
 ## 3. 发布与验证流程（固定，不要自创）
 
