@@ -61,18 +61,36 @@
 		<script type="module">
 			// 清掉占位内容，Sveltia 会把整个 body 接管
 			document.getElementById("fallback")?.remove();
-			const script = document.createElement("script");
-			script.type = "module";
-			script.src = "https://unpkg.com/@sveltia/cms/dist/sveltia-cms.js";
-			script.onerror = () => {
+
+			// 依次尝试多个 CDN，前一个失败自动换下一个。
+			// jsDelivr 排前面：国内网络访问 unpkg 经常不通。
+			const sources = [
+				"https://cdn.jsdelivr.net/npm/@sveltia/cms/dist/sveltia-cms.js",
+				"https://unpkg.com/@sveltia/cms/dist/sveltia-cms.js",
+			];
+
+			const fail = () => {
 				document.body.innerHTML =
 					'<div style="max-width:40rem;margin:12vh auto;padding:0 1.5rem;line-height:1.8;font-family:system-ui,sans-serif">' +
 					"<h1>写作后台加载失败</h1>" +
-					"<p>unpkg.com 没连上。把本文件里的脚本地址换成 " +
-					"<code>https://cdn.jsdelivr.net/npm/@sveltia/cms/dist/sveltia-cms.js</code> " +
-					"再刷新即可；或者直接用 GitHub 网页版新建 <code>src/content/posts/xxx.md</code>。</p></div>";
+					"<p>两个 CDN 都没连上，通常是网络问题。换个网络或挂代理后刷新即可。</p>" +
+					"<p>应急办法：直接在 GitHub 网页版新建 <code>src/content/posts/xxx.md</code>，" +
+					"内容格式见仓库里的 <code>docs/WRITING.md</code>。</p></div>";
 			};
-			document.head.appendChild(script);
+
+			const load = (i) => {
+				if (i >= sources.length) {
+					fail();
+					return;
+				}
+				const script = document.createElement("script");
+				script.type = "module";
+				script.src = sources[i];
+				script.onerror = () => load(i + 1);
+				document.head.appendChild(script);
+			};
+
+			load(0);
 		</script>
 	</body>
 </html>
