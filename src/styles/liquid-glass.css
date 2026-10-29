@@ -1,0 +1,189 @@
+/* 液体玻璃：Figma 式的克制 + iOS 式的玻璃与弹簧动效。
+   原则：只改观感，不改结构；一支克制的蓝灰主色、一种弹簧曲线、
+   玻璃只做透光和边缘高光，不做彩虹渐变和装饰动画。 */
+
+/* 弹簧曲线：iOS 式，带一点回弹，不过冲 */
+:root {
+	--lg-spring: cubic-bezier(0.34, 1.35, 0.64, 1);
+	--lg-ease: cubic-bezier(0.22, 1, 0.36, 1);
+	--lg-glass-bg: rgba(255, 255, 255, 0.58);
+	--lg-glass-border: rgba(255, 255, 255, 0.75);
+	--lg-glass-shadow:
+		0 1px 2px rgba(15, 23, 42, 0.06),
+		0 12px 32px rgba(15, 23, 42, 0.10);
+	--lg-glass-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.8),
+		inset 0 -1px 0 rgba(255, 255, 255, 0.25);
+	/* 把主题主色从高饱和青绿压成克制的蓝灰 */
+	--primary: oklch(0.52 0.07 250) !important;
+}
+:root.dark {
+	--lg-glass-bg: rgba(18, 20, 28, 0.48);
+	--lg-glass-border: rgba(255, 255, 255, 0.16);
+	--lg-glass-shadow:
+		0 1px 2px rgba(0, 0, 0, 0.3),
+		0 16px 40px rgba(0, 0, 0, 0.35);
+	--lg-glass-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.18),
+		inset 0 -1px 0 rgba(255, 255, 255, 0.06);
+	--primary: oklch(0.78 0.06 250) !important;
+}
+
+/* 玻璃本体：卡片、浮动面板、搜索面板、音乐播放器 */
+.card-base,
+.float-panel,
+.search-panel,
+.music-player-widget,
+.floating-toc-panel {
+	background: var(--lg-glass-bg) !important;
+	backdrop-filter: blur(20px) saturate(1.7) !important;
+	-webkit-backdrop-filter: blur(20px) saturate(1.7) !important;
+	border: 1px solid var(--lg-glass-border) !important;
+	border-radius: 24px !important;
+	box-shadow: var(--lg-glass-shadow), var(--lg-glass-highlight) !important;
+	transition:
+		transform 0.55s var(--lg-spring),
+		box-shadow 0.55s var(--lg-ease),
+		background-color 0.55s var(--lg-ease),
+		border-color 0.55s var(--lg-ease) !important;
+}
+
+/* 导航栏：整条变圆角胶囊玻璃，下滑时才浮起来 */
+#navbar > div {
+	background: var(--lg-glass-bg) !important;
+	backdrop-filter: blur(20px) saturate(1.7) !important;
+	-webkit-backdrop-filter: blur(20px) saturate(1.7) !important;
+	border: 1px solid var(--lg-glass-border) !important;
+	border-radius: 20px !important;
+	box-shadow: var(--lg-glass-shadow), var(--lg-glass-highlight) !important;
+}
+#navbar {
+	border-radius: 20px !important;
+}
+
+/* 文章卡片：悬停轻轻浮起，图片慢缩放，不做闪烁式动效 */
+.post-card-wrapper,
+.post-card-item {
+	border-radius: 24px !important;
+	transition:
+		transform 0.55s var(--lg-spring),
+		box-shadow 0.55s var(--lg-ease) !important;
+}
+.post-card-wrapper:hover,
+.post-card-item:hover {
+	transform: translateY(-4px) !important;
+	box-shadow:
+		0 2px 4px rgba(15, 23, 42, 0.06),
+		0 20px 44px rgba(15, 23, 42, 0.14) !important;
+}
+.post-card-wrapper img,
+.post-card-item img {
+	transition: transform 0.9s var(--lg-ease) !important;
+}
+.post-card-wrapper:hover img,
+.post-card-item:hover img {
+	transform: scale(1.04) !important;
+}
+
+/* 按钮与标签：全是胶囊，按下回弹，不再满屏高饱和填充 */
+a[href],
+button {
+	transition:
+		transform 0.45s var(--lg-spring),
+		background-color 0.45s var(--lg-ease),
+		box-shadow 0.45s var(--lg-ease) !important;
+}
+button:active,
+a[href]:active {
+	transform: scale(0.97) !important;
+}
+
+/* 排版：Figma 式收紧标题间距、放宽正文行高，去掉“AI 排版感” */
+h1, h2, h3 {
+	letter-spacing: -0.02em !important;
+	font-weight: 650 !important;
+}
+body {
+	line-height: 1.75 !important;
+}
+/* 横幅标题不再巨大夸张，字号由配置控制，这里只收紧间距 */
+#wallpaper-wrapper h1,
+.banner-title {
+	letter-spacing: -0.03em !important;
+}
+
+/* 横幅图片压暗一点、降一点饱和，玻璃才有东西可折射，而不是被原图抢戏 */
+#wallpaper-wrapper img,
+#wallpaper-wrapper video {
+	filter: saturate(0.88) brightness(0.96) !important;
+}
+
+/* 切页与入场：120ms 的急跳改成 400ms 的弹簧淡入，位移只留 8px */
+.transition-main {
+	transition:
+		opacity 0.4s var(--lg-ease),
+		transform 0.4s var(--lg-spring) !important;
+}
+html.is-animating .transition-main {
+	transform: translateY(8px) !important;
+}
+html.is-animating.is-leaving .transition-leaving {
+	transform: translateY(-8px) !important;
+}
+.onload-animation {
+	animation: lg-fade-in-up 0.6s var(--lg-spring) forwards !important;
+}
+@keyframes lg-fade-in-up {
+	from { opacity: 0; transform: translateY(12px); }
+	to { opacity: 1; transform: translateY(0); }
+}
+.onload-animation:nth-child(1) { animation-delay: 0ms; }
+.onload-animation:nth-child(2) { animation-delay: 60ms; }
+.onload-animation:nth-child(3) { animation-delay: 120ms; }
+.onload-animation:nth-child(4) { animation-delay: 180ms; }
+.onload-animation:nth-child(5) { animation-delay: 240ms; }
+
+/* 尊重减动效：一切动效全部静止 */
+@media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		animation-duration: 0.01ms !important;
+		transition-duration: 0.01ms !important;
+	}
+}
+
+/* 全屏覆盖模式：卡片和导航栏后面是整页壁纸，玻璃才看得见。
+   这里用 body.wallpaper-transparent + 高特异性选择器，压过主题
+   在透明模式下给卡片/导航栏写的固定半透明底色。 */
+body.wallpaper-transparent .card-base,
+body.wallpaper-transparent .card-base-transparent,
+body.wallpaper-transparent .btn-card {
+	background: var(--lg-glass-bg) !important;
+	backdrop-filter: blur(20px) saturate(1.7) !important;
+	-webkit-backdrop-filter: blur(20px) saturate(1.7) !important;
+	border: 1px solid var(--lg-glass-border) !important;
+	border-radius: 24px !important;
+	box-shadow: var(--lg-glass-shadow), var(--lg-glass-highlight) !important;
+}
+html[data-wallpaper-mode="overlay"] body.wallpaper-transparent #navbar > div {
+	background: var(--lg-glass-bg) !important;
+	backdrop-filter: blur(20px) saturate(1.7) !important;
+	-webkit-backdrop-filter: blur(20px) saturate(1.7) !important;
+	border: 1px solid var(--lg-glass-border) !important;
+	border-radius: 20px !important;
+	box-shadow: var(--lg-glass-shadow), var(--lg-glass-highlight) !important;
+}
+/* 标准 backdrop-filter 单独再写一遍，避免压缩时只剩 -webkit 前缀 */
+@supports (backdrop-filter: blur(1px)) {
+	.card-base,
+	.card-base-transparent,
+	.float-panel,
+	.search-panel,
+	.music-player-widget,
+	.floating-toc-panel,
+	body.wallpaper-transparent .card-base,
+	body.wallpaper-transparent .card-base-transparent,
+	#navbar > div,
+	html[data-wallpaper-mode="overlay"] body.wallpaper-transparent #navbar > div {
+		backdrop-filter: blur(20px) saturate(1.7) !important;
+	}
+}
