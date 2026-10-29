@@ -63,8 +63,11 @@ const postsCollection: ContentCollection<PostData> = defineCollection({
 	loader: glob({ pattern: "**/*.{md,mdx}", base: "./src/content/posts" }),
 	schema: z.object({
 		title: z.string(),
-		published: z.date(),
-		updated: z.date().optional(),
+		// coerce：既接受 YAML 原生日期（2026-10-29），也接受被引号包住的字符串
+		// （'2026-10-29'）。CMS 与 AI 智能体写出来的日期格式不一定带不带引号，
+		// 用 coerce 兜住，避免因为一个引号就把整站构建打挂。
+		published: z.coerce.date(),
+		updated: z.coerce.date().optional(),
 		draft: z.boolean().optional().default(false),
 		description: z.string().optional().default(""),
 		image: z.string().optional().default(""),
@@ -99,7 +102,7 @@ const specCollection: ContentCollection<Record<string, never>> =
 const dynamicCollection: ContentCollection<DynamicData> = defineCollection({
 	loader: glob({ pattern: "**/*.md", base: "./src/content/dynamic" }),
 	schema: z.object({
-		published: z.date(),
+		published: z.coerce.date(),
 		pinned: z.boolean().optional().default(false),
 		location: z.string().optional().default(""),
 	}),
@@ -109,7 +112,7 @@ const projectsCollection: ContentCollection<ProjectData> = defineCollection({
 	loader: glob({ pattern: "**/*.{md,mdx}", base: "./src/content/projects" }),
 	schema: z.object({
 		title: z.string(),
-		published: z.date(),
+		published: z.coerce.date(),
 		draft: z.boolean().optional().default(false),
 		order: z.number().optional(),
 		description: z.string().optional().default(""),

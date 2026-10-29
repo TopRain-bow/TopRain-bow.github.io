@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="zh-CN">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta name="robots" content="noindex, nofollow" />
+		<meta name="color-scheme" content="light dark" />
+		<title>写文章 · 哈基蜂的小站</title>
+		<link rel="icon" href="/favicon/firefly-32.png" />
+		<style>
+			:root {
+				color-scheme: light dark;
+			}
+			body {
+				margin: 0;
+				font-family: system-ui, -apple-system, "Segoe UI", "Noto Sans SC", sans-serif;
+				background: #f7f8fa;
+				color: #1f2430;
+			}
+			#fallback {
+				max-width: 40rem;
+				margin: 12vh auto;
+				padding: 0 1.5rem;
+				line-height: 1.8;
+			}
+			#fallback h1 {
+				font-size: 1.25rem;
+				margin: 0 0 1rem;
+			}
+			#fallback code {
+				background: #e8ebf0;
+				border-radius: 4px;
+				padding: 0.1rem 0.35rem;
+			}
+			#fallback ul {
+				padding-left: 1.2rem;
+			}
+			@media (prefers-color-scheme: dark) {
+				body {
+					background: #16181d;
+					color: #e6e8ee;
+				}
+				#fallback code {
+					background: #262a33;
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<div id="fallback">
+			<h1>正在加载写作后台…</h1>
+			<p>
+				如果长时间停在这里，说明 Sveltia CMS 的脚本没加载出来（多半是网络到
+				<code>unpkg.com</code> 不通）。可以换一个镜像后刷新：
+			</p>
+			<ul>
+				<li>打开 <code>/admin/index.html</code> 把脚本地址换成 <code>cdn.jsdelivr.net/npm/@sveltia/cms/dist/sveltia-cms.js</code></li>
+				<li>或直接用 GitHub 网页版新建 <code>src/content/posts/xxx.md</code></li>
+			</ul>
+		</div>
+		<script type="module">
+			// 清掉占位内容，Sveltia 会把整个 body 接管
+			document.getElementById("fallback")?.remove();
+			const script = document.createElement("script");
+			script.type = "module";
+			script.src = "https://unpkg.com/@sveltia/cms/dist/sveltia-cms.js";
+			script.onerror = () => {
+				document.body.innerHTML =
+					'<div style="max-width:40rem;margin:12vh auto;padding:0 1.5rem;line-height:1.8;font-family:system-ui,sans-serif">' +
+					"<h1>写作后台加载失败</h1>" +
+					"<p>unpkg.com 没连上。把本文件里的脚本地址换成 " +
+					"<code>https://cdn.jsdelivr.net/npm/@sveltia/cms/dist/sveltia-cms.js</code> " +
+					"再刷新即可；或者直接用 GitHub 网页版新建 <code>src/content/posts/xxx.md</code>。</p></div>";
+			};
+			document.head.appendChild(script);
+		</script>
+	</body>
+</html>
