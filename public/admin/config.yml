@@ -18,8 +18,8 @@ site_url: https://toprain-bow.github.io
 display_url: https://toprain-bow.github.io
 logo_url: https://toprain-bow.github.io/favicon/firefly-32.png
 
-# 中文界面
-locale: zh_Hans
+# 中文界面（Sveltia 的语言包是 zh-CN，不是 Decap 的 zh_Hans）
+locale: zh-CN
 
 # 文章里插入图片时的落盘位置
 media_folder: public/assets/images/posts
