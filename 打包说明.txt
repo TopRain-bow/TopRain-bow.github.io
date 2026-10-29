@@ -1,0 +1,19 @@
+哈基蜂的小站 - 完整项目包
+================================
+来源：本地 Firefly 源码（Astro 7.3.2 + Firefly v6.16.8 改造版），即正在往 GitHub 现仓库 source 分支推的那份源码。
+
+包含内容：
+- 全部源码 src/、public/（含图片、字体、音乐、Live2D pio、相册 demo）
+- 配置、2 篇文章、液体玻璃样式 src/styles/liquid-glass.css（全屏覆盖 overlay 模式）
+- 新的源码构建工作流 .github/workflows/pages.yml（push 到 main 自动构建部署，Node 24 + pnpm 11.22）
+- 交接说明.md（给下一个智能体看的改动指南）
+
+已排除（拿到后自己装，不用手动补）：
+- node_modules/（1.1GB）、dist/（构建产物）、.astro/（构建生成）
+- 友链页已清理为“暂无友链”，相册演示密码已清（原模板作者信息不在里面）
+
+使用方法：
+1. 解压后进入目录
+2. pnpm install
+3. pnpm build（本地验证）
+4. 改文章：src/content/posts/*.md；改配置：src/config/*.ts
